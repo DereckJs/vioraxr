@@ -1,15 +1,20 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  Typography, Paper, Button, Toolbar, AppBar, Grid, Card, CardContent, CardActions, Chip,
+  Typography, Paper, Button, Chip,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
-import TimelineIcon from '@material-ui/icons/Timeline';
+import DescriptionIcon from '@material-ui/icons/Description';
+import EventIcon from '@material-ui/icons/Event';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import VioraBrand, { vioraAssets } from './VioraBrand';
 
 const useStyles = makeStyles((theme) => ({
@@ -17,338 +22,457 @@ const useStyles = makeStyles((theme) => ({
     height: '100dvh',
     color: theme.palette.text.primary,
     background:
-      'radial-gradient(circle at 20% 10%, rgba(0, 212, 255, 0.13), transparent 25%), radial-gradient(circle at 78% 8%, rgba(139, 92, 246, 0.16), transparent 29%), linear-gradient(135deg, #050b17 0%, #071527 58%, #03101f 100%)',
+      'radial-gradient(circle at 14% 10%, rgba(0, 212, 255, 0.13), transparent 26%), radial-gradient(circle at 86% 8%, rgba(123, 61, 255, 0.18), transparent 30%), linear-gradient(135deg, #050b17 0%, #071526 48%, #03101f 100%)',
     overflowY: 'auto',
     overflowX: 'hidden',
+    WebkitOverflowScrolling: 'touch',
   },
-  appBar: {
-    background: 'rgba(5, 11, 23, 0.78)',
-    borderBottom: '1px solid rgba(145, 231, 255, 0.14)',
-    backdropFilter: 'blur(18px)',
-  },
-  toolbar: {
-    minHeight: 58,
-    paddingLeft: theme.spacing(4),
-    paddingRight: theme.spacing(4),
-    [theme.breakpoints.down('xs')]: {
-      paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(2),
-    },
-  },
-  title: {
-    flexGrow: 1,
-  },
-  logout: {
-    color: '#cdeeff',
-    borderColor: 'rgba(145, 231, 255, 0.24)',
-  },
-  content: {
-    width: 'min(1120px, calc(100% - 40px))',
+  shell: {
+    width: 'min(1375px, calc(100% - 40px))',
     margin: '0 auto',
-    padding: theme.spacing(2.5, 0, 5),
+    padding: theme.spacing(1.2, 0, 5),
     [theme.breakpoints.down('xs')]: {
       width: 'calc(100% - 28px)',
-      paddingTop: theme.spacing(3),
+      paddingTop: theme.spacing(1),
     },
   },
-  hero: {
-    display: 'grid',
-    gridTemplateColumns: 'minmax(0, 1fr) 330px',
+  header: {
+    minHeight: 42,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     gap: theme.spacing(2),
+    marginBottom: theme.spacing(1),
+  },
+  brand: {
+    '& img': {
+      width: 178,
+      filter: 'drop-shadow(0 18px 34px rgba(16, 128, 255, 0.28))',
+    },
+    [theme.breakpoints.down('xs')]: {
+      '& img': {
+        width: 138,
+      },
+    },
+  },
+  logout: {
+    color: '#d8f5ff',
+    borderColor: 'rgba(145, 231, 255, 0.24)',
+    backgroundColor: 'rgba(255,255,255,0.03)',
+  },
+  panel: {
+    borderRadius: 18,
+    background:
+      'linear-gradient(145deg, rgba(7, 20, 38, 0.9), rgba(4, 12, 24, 0.82))',
+    border: '1px solid rgba(94, 183, 255, 0.16)',
+    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), 0 24px 70px rgba(0,0,0,0.24)',
+  },
+  topGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'minmax(760px, 1fr) 420px',
+    gap: theme.spacing(2.2),
     marginBottom: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       gridTemplateColumns: '1fr',
     },
   },
-  heroPanel: {
+  hero: {
     position: 'relative',
+    minHeight: 356,
     overflow: 'hidden',
-    padding: theme.spacing(2.6),
-    borderRadius: 22,
+    padding: theme.spacing(4, 4.6),
+    display: 'grid',
+    gridTemplateColumns: 'minmax(350px, 0.82fr) minmax(390px, 1fr)',
+    alignItems: 'center',
     background:
-      'linear-gradient(135deg, rgba(11, 29, 51, 0.94), rgba(7, 21, 39, 0.76)), radial-gradient(circle at 88% 26%, rgba(0, 212, 255, 0.18), transparent 30%)',
-    border: '1px solid rgba(145, 231, 255, 0.16)',
-    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08), 0 28px 80px rgba(0,0,0,0.28)',
+      'radial-gradient(circle at 76% 54%, rgba(0, 106, 255, 0.22), transparent 32%), linear-gradient(145deg, rgba(7, 20, 38, 0.95), rgba(3, 12, 25, 0.87))',
+    [theme.breakpoints.down('sm')]: {
+      gridTemplateColumns: '1fr',
+      padding: theme.spacing(3),
+    },
   },
-  heroWatermark: {
-    position: 'absolute',
-    right: -34,
-    top: -50,
-    width: 250,
-    opacity: 0.13,
-    pointerEvents: 'none',
+  heroContent: {
+    position: 'relative',
+    zIndex: 2,
   },
   eyebrow: {
-    marginBottom: theme.spacing(2),
-    color: '#91e7ff',
-    fontSize: 10,
+    width: 'fit-content',
+    marginBottom: theme.spacing(2.2),
+    color: '#00d4ff',
+    fontSize: 13,
     fontWeight: 800,
-    letterSpacing: 1.3,
+    letterSpacing: 1.8,
     textTransform: 'uppercase',
   },
   heading: {
-    maxWidth: 720,
-    fontSize: 'clamp(1.8rem, 3vw, 2.7rem)',
-    lineHeight: 1.02,
+    maxWidth: 560,
+    fontSize: 'clamp(2.4rem, 4vw, 4rem)',
+    lineHeight: 1.08,
     fontWeight: 800,
     letterSpacing: '-0.055em',
     textWrap: 'balance',
   },
+  accent: {
+    color: '#6c55ff',
+  },
   copy: {
-    maxWidth: 620,
-    marginTop: theme.spacing(1.5),
-    color: '#a9c4d4',
-    fontSize: 13,
+    maxWidth: 570,
+    marginTop: theme.spacing(2),
+    color: '#c2d6e4',
+    fontSize: 17,
     lineHeight: 1.65,
   },
+  actions: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: theme.spacing(1.5),
+    marginTop: theme.spacing(3.2),
+  },
+  primaryAction: {
+    minWidth: 184,
+    minHeight: 50,
+    boxShadow: '0 18px 42px rgba(86, 69, 255, 0.36)',
+  },
+  secondaryAction: {
+    minWidth: 166,
+    minHeight: 50,
+    color: '#eef8ff',
+    borderColor: 'rgba(145, 231, 255, 0.28)',
+    backgroundColor: 'rgba(255,255,255,0.02)',
+  },
+  patientVisual: {
+    width: '112%',
+    maxWidth: 560,
+    justifySelf: 'center',
+    marginLeft: -22,
+    filter: 'drop-shadow(0 0 44px rgba(0, 120, 255, 0.32))',
+    [theme.breakpoints.down('sm')]: {
+      width: 'min(100%, 540px)',
+      margin: theme.spacing(1.5, 'auto', 0),
+    },
+  },
   statusPanel: {
-    padding: theme.spacing(2),
-    borderRadius: 22,
-    backgroundColor: 'rgba(8, 23, 41, 0.72)',
-    border: '1px solid rgba(145, 231, 255, 0.14)',
+    padding: theme.spacing(2.8),
+    display: 'grid',
+    gap: theme.spacing(2.3),
   },
   statusHeader: {
     display: 'flex',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: theme.spacing(3),
+    alignItems: 'center',
+    gap: theme.spacing(1.5),
+  },
+  sideTitle: {
+    color: '#f8fbff',
+    fontSize: 22,
+    fontWeight: 800,
+    letterSpacing: '-0.025em',
   },
   statusBadge: {
     color: '#9af7d3',
     backgroundColor: 'rgba(36, 207, 142, 0.12)',
     border: '1px solid rgba(36, 207, 142, 0.24)',
     borderRadius: 10,
-    fontWeight: 700,
+    fontWeight: 800,
   },
-  statusTrack: {
+  statusList: {
     display: 'grid',
-    gap: theme.spacing(1.4),
-  },
-  step: {
-    display: 'grid',
-    gridTemplateColumns: '32px minmax(0, 1fr)',
     gap: theme.spacing(1.5),
-    alignItems: 'start',
   },
-  stepDot: {
-    width: 32,
-    height: 32,
-    borderRadius: 12,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#00d4ff',
-    backgroundColor: 'rgba(0, 212, 255, 0.1)',
-    border: '1px solid rgba(0, 212, 255, 0.18)',
-  },
-  stepTitle: {
-    color: '#f8fbff',
-    fontWeight: 700,
-  },
-  stepText: {
-    color: '#8ea8ba',
-    fontSize: 12,
-    lineHeight: 1.5,
-  },
-  sectionHeader: {
-    display: 'flex',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-    gap: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    [theme.breakpoints.down('xs')]: {
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-    },
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: 800,
-  },
-  sectionText: {
-    color: '#8ea8ba',
-  },
-  card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    borderRadius: 24,
-    overflow: 'hidden',
-    backgroundColor: 'rgba(8, 23, 41, 0.76)',
-    border: '1px solid rgba(145, 231, 255, 0.14)',
-    color: theme.palette.text.primary,
-    boxShadow: '0 24px 70px rgba(0,0,0,0.25)',
-  },
-  cardTop: {
-    minHeight: 190,
-    position: 'relative',
-    padding: theme.spacing(2.2),
-    background:
-      'radial-gradient(circle at 54% 45%, rgba(0, 212, 255, 0.28), transparent 24%), radial-gradient(circle at 66% 68%, rgba(139, 92, 246, 0.17), transparent 30%), linear-gradient(145deg, rgba(5, 16, 31, 0.92), rgba(8, 23, 41, 0.64))',
-  },
-  scanVisual: {
-    position: 'absolute',
-    right: 24,
-    top: 26,
-    width: 118,
-    height: 132,
-    borderRadius: '45%',
-    border: '1px solid rgba(0, 212, 255, 0.45)',
-    boxShadow: 'inset 0 0 38px rgba(0, 212, 255, 0.12)',
-    '&:before': {
-      content: '""',
-      position: 'absolute',
-      left: '12%',
-      right: '12%',
-      top: '48%',
-      height: 1,
-      background: 'linear-gradient(90deg, transparent, #00d4ff, transparent)',
-    },
-  },
-  cardIcon: {
-    width: 44,
-    height: 44,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#00d4ff',
-    borderRadius: 15,
-    backgroundColor: 'rgba(0, 212, 255, 0.1)',
-  },
-  cardContent: {
-    flex: 1,
-    padding: theme.spacing(2.8),
-  },
-  studyTitle: {
-    fontSize: 20,
-    fontWeight: 800,
-    color: '#f8fbff',
-  },
-  studyMeta: {
-    marginTop: theme.spacing(1),
-    color: '#91e7ff',
-    fontSize: 12,
-    fontWeight: 700,
-    letterSpacing: 1.1,
-    textTransform: 'uppercase',
-  },
-  studyText: {
-    marginTop: theme.spacing(1.5),
-    color: '#9bb7c9',
-    lineHeight: 1.65,
-  },
-  cardActions: {
-    padding: theme.spacing(0, 2.8, 2.8),
-  },
-  insightGrid: {
+  statusItem: {
+    minHeight: 74,
     display: 'grid',
-    gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-    gap: theme.spacing(1.2),
-    marginTop: theme.spacing(2),
+    gridTemplateColumns: '48px 1fr auto',
+    gap: theme.spacing(1.5),
+    alignItems: 'center',
+    padding: theme.spacing(1.5),
+    borderRadius: 13,
+    background:
+      'linear-gradient(145deg, rgba(11, 34, 58, 0.64), rgba(8, 21, 39, 0.46))',
+    border: '1px solid rgba(94, 183, 255, 0.08)',
+  },
+  iconBox: {
+    width: 48,
+    height: 48,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#00d4ff',
+    borderRadius: 13,
+    background: 'linear-gradient(145deg, rgba(0, 212, 255, 0.18), rgba(0, 107, 255, 0.08))',
+  },
+  statusName: {
+    color: '#f8fbff',
+    fontWeight: 800,
+  },
+  statusText: {
+    marginTop: 3,
+    color: '#a8bdcd',
+    fontSize: 13,
+  },
+  metricGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+    gap: theme.spacing(1.8),
+    marginBottom: theme.spacing(2),
     [theme.breakpoints.down('sm')]: {
+      gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+    },
+    [theme.breakpoints.down('xs')]: {
       gridTemplateColumns: '1fr',
     },
   },
-  insight: {
-    padding: theme.spacing(1.5),
-    borderRadius: 15,
-    backgroundColor: 'rgba(255,255,255,0.035)',
-    border: '1px solid rgba(145, 231, 255, 0.12)',
+  metricCard: {
+    minHeight: 128,
+    padding: theme.spacing(2.2),
+    display: 'grid',
+    gridTemplateColumns: '58px 1fr',
+    gap: theme.spacing(1.5),
+    alignItems: 'center',
   },
-  insightValue: {
+  metricIconBlue: {
+    color: '#00d4ff',
+    backgroundColor: 'rgba(0, 144, 255, 0.14)',
+  },
+  metricIconPurple: {
+    color: '#c18cff',
+    backgroundColor: 'rgba(122, 53, 255, 0.18)',
+  },
+  metricIconGreen: {
+    color: '#00ff98',
+    backgroundColor: 'rgba(36, 207, 142, 0.14)',
+  },
+  metricIconYellow: {
+    color: '#ffd23f',
+    backgroundColor: 'rgba(255, 210, 63, 0.12)',
+  },
+  metricValue: {
+    display: 'block',
     color: '#f8fbff',
-    fontSize: 20,
+    fontSize: 30,
+    lineHeight: 1,
     fontWeight: 800,
     fontVariantNumeric: 'tabular-nums',
   },
-  insightLabel: {
-    color: '#8ea8ba',
-    fontSize: 12,
-    marginTop: 6,
+  metricLabel: {
+    marginTop: theme.spacing(0.7),
+    color: '#c2d6e4',
+    fontSize: 14,
   },
-  uploadGrid: {
+  cardLink: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: theme.spacing(1),
+    marginTop: theme.spacing(1.4),
+    color: '#00d4ff',
+    fontWeight: 700,
+  },
+  lowerGrid: {
     display: 'grid',
-    gridTemplateColumns: 'minmax(0, 1fr) 300px',
+    gridTemplateColumns: 'minmax(680px, 1fr) 450px',
     gap: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       gridTemplateColumns: '1fr',
     },
   },
+  studiesPanel: {
+    padding: theme.spacing(2.6),
+  },
+  sectionTitle: {
+    color: '#f8fbff',
+    fontSize: 23,
+    fontWeight: 800,
+    letterSpacing: '-0.025em',
+  },
+  sectionText: {
+    marginTop: theme.spacing(0.5),
+    color: '#a8bdcd',
+    fontSize: 14,
+  },
   tableContainer: {
+    marginTop: theme.spacing(1.8),
     overflow: 'hidden',
-    borderRadius: 22,
-    backgroundColor: 'rgba(8, 23, 41, 0.78)',
-    border: '1px solid rgba(145, 231, 255, 0.14)',
-    boxShadow: '0 24px 70px rgba(0,0,0,0.24)',
+    borderRadius: 13,
+    backgroundColor: 'rgba(5, 14, 27, 0.64)',
+    border: '1px solid rgba(94, 183, 255, 0.12)',
   },
   tableHead: {
-    backgroundColor: 'rgba(0, 212, 255, 0.07)',
+    backgroundColor: 'rgba(0, 212, 255, 0.06)',
   },
   headCell: {
-    color: '#91e7ff',
+    color: '#c7d9e8',
     fontSize: 11,
     fontWeight: 800,
-    letterSpacing: 1.1,
+    letterSpacing: 1.25,
     textTransform: 'uppercase',
+    borderBottom: '1px solid rgba(94, 183, 255, 0.13)',
+  },
+  tableCell: {
+    borderBottom: '1px solid rgba(94, 183, 255, 0.09)',
   },
   row: {
     '&:hover': {
       backgroundColor: 'rgba(0, 212, 255, 0.045)',
     },
   },
+  studyIdentity: {
+    display: 'grid',
+    gridTemplateColumns: '44px 1fr',
+    gap: theme.spacing(1.2),
+    alignItems: 'center',
+  },
+  studyIcon: {
+    width: 44,
+    height: 44,
+    display: 'grid',
+    placeItems: 'center',
+    borderRadius: 12,
+    color: '#91e7ff',
+    backgroundColor: 'rgba(0, 144, 255, 0.14)',
+  },
+  studyIconPurple: {
+    color: '#c18cff',
+    backgroundColor: 'rgba(122, 53, 255, 0.18)',
+  },
   studyName: {
     color: '#f8fbff',
-    fontWeight: 700,
+    fontWeight: 800,
   },
   muted: {
-    color: '#8ea8ba',
-    fontSize: 12,
+    marginTop: 3,
+    color: '#a8bdcd',
+    fontSize: 13,
   },
   chip: {
-    borderRadius: 10,
+    borderRadius: 9,
+    fontWeight: 800,
+    fontSize: 11,
+  },
+  chipDone: {
     color: '#9af7d3',
     backgroundColor: 'rgba(36, 207, 142, 0.12)',
     border: '1px solid rgba(36, 207, 142, 0.24)',
+  },
+  chipResult: {
+    color: '#00d4ff',
+    backgroundColor: 'rgba(0, 144, 255, 0.12)',
+    border: '1px solid rgba(0, 144, 255, 0.24)',
+  },
+  tableLink: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: theme.spacing(2),
+    color: '#00d4ff',
     fontWeight: 700,
-    fontSize: 11,
   },
-  brandCard: {
-    position: 'relative',
-    minHeight: 280,
-    borderRadius: 22,
-    overflow: 'hidden',
-    border: '1px solid rgba(145, 231, 255, 0.14)',
-    backgroundColor: 'rgba(8, 23, 41, 0.76)',
+  sideColumn: {
+    display: 'grid',
+    gap: theme.spacing(1.8),
   },
-  brandImage: {
-    position: 'absolute',
-    inset: 0,
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    opacity: 0.52,
-    filter: 'saturate(1.15) contrast(1.08)',
+  infoPanel: {
+    padding: theme.spacing(2.6),
   },
-  brandShade: {
-    position: 'absolute',
-    inset: 0,
-    background: 'linear-gradient(0deg, rgba(5,11,23,0.88), rgba(5,11,23,0.24))',
+  infoTitle: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.spacing(1.2),
+    color: '#f8fbff',
+    fontSize: 21,
+    fontWeight: 800,
   },
-  brandLogo: {
-    position: 'absolute',
-    left: 18,
-    bottom: 18,
-    width: 170,
-    maxWidth: '70%',
-    filter: 'drop-shadow(0 14px 24px rgba(0,0,0,0.45))',
+  appointmentCard: {
+    marginTop: theme.spacing(2),
+    display: 'grid',
+    gridTemplateColumns: '82px 1fr auto',
+    gap: theme.spacing(1.7),
+    alignItems: 'center',
+    padding: theme.spacing(1.6),
+    borderRadius: 14,
+    border: '1px solid rgba(94, 183, 255, 0.1)',
+    background:
+      'linear-gradient(145deg, rgba(11, 34, 58, 0.68), rgba(8, 21, 39, 0.52))',
+  },
+  dateBox: {
+    width: 82,
+    height: 82,
+    borderRadius: 14,
+    display: 'grid',
+    placeItems: 'center',
+    textAlign: 'center',
+    background:
+      'linear-gradient(145deg, rgba(122, 53, 255, 0.32), rgba(13, 39, 84, 0.72))',
+    color: '#f8fbff',
+  },
+  dateDay: {
+    display: 'block',
+    fontSize: 34,
+    lineHeight: 1,
+    fontWeight: 800,
+    color: '#ff8cff',
+  },
+  dateMonth: {
+    display: 'block',
+    marginTop: 4,
+    fontSize: 14,
+    fontWeight: 800,
+  },
+  infoName: {
+    color: '#f8fbff',
+    fontWeight: 800,
+  },
+  infoText: {
+    marginTop: 3,
+    color: '#c2d6e4',
+    fontSize: 14,
+  },
+  adviceIcon: {
+    color: '#ff4dbe',
+  },
+  adviceBody: {
+    marginTop: theme.spacing(2),
+    display: 'grid',
+    gridTemplateColumns: '58px 1fr',
+    gap: theme.spacing(1.6),
+    alignItems: 'center',
+  },
+  adviceBox: {
+    width: 58,
+    height: 58,
+    display: 'grid',
+    placeItems: 'center',
+    borderRadius: 14,
+    color: '#ff79d1',
+    backgroundColor: 'rgba(255, 77, 190, 0.16)',
   },
 }));
 
-const uploadRecords = [
-  { id: 'EST-1024', study: 'CT Abdomen', date: '2026-05-04', files: '142 DICOM', status: 'Disponible' },
-  { id: 'EST-1018', study: 'Radiografia torax', date: '2026-04-18', files: '18 imagenes', status: 'Disponible' },
-  { id: 'EST-1009', study: 'MRI Brain', date: '2026-03-27', files: '218 DICOM', status: 'En revision' },
+const patientStudies = [
+  { id: 'EST-1024', study: 'Tomografía abdominal', type: 'CT Abdomen', date: '05 may 2026', status: 'Completado', result: 'Disponible', icon: 'blue' },
+  { id: 'EST-1018', study: 'Resonancia magnética cerebral', type: 'MRI Brain', date: '03 may 2026', status: 'Completado', result: 'Disponible', icon: 'purple' },
+  { id: 'EST-1009', study: 'Radiografía de tórax', type: 'Radiografía', date: '18 abr 2026', status: 'Completado', result: 'Disponible', icon: 'blue' },
 ];
+
+const MetricCard = ({ icon, value, label, link, tone }) => {
+  const classes = useStyles();
+  const toneClass = tone === 'purple'
+    ? classes.metricIconPurple
+    : tone === 'green'
+      ? classes.metricIconGreen
+      : tone === 'yellow'
+        ? classes.metricIconYellow
+        : classes.metricIconBlue;
+
+  return (
+    <Paper className={`${classes.panel} ${classes.metricCard}`} elevation={0}>
+      <span className={`${classes.iconBox} ${toneClass}`}>{icon}</span>
+      <div>
+        <span className={classes.metricValue}>{value}</span>
+        <Typography className={classes.metricLabel}>{label}</Typography>
+        <span className={classes.cardLink}>{link} <ArrowForwardIcon fontSize="small" /></span>
+      </div>
+    </Paper>
+  );
+};
 
 const PatientDashboard = () => {
   const classes = useStyles();
@@ -367,112 +491,144 @@ const PatientDashboard = () => {
   };
 
   const handleOpenViewer = () => {
-    history.push(`/viewer`);
+    history.push('/viewer');
+  };
+
+  const handleScrollStudies = () => {
+    const studies = document.getElementById('patient-studies');
+    if (studies) studies.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
     <main className={classes.root}>
-      <AppBar position="sticky" className={classes.appBar} elevation={0}>
-        <Toolbar className={classes.toolbar}>
-          <div className={classes.title}>
-            <VioraBrand size="compact" />
-          </div>
+      <div className={classes.shell}>
+        <header className={classes.header}>
+          <span className={classes.brand}>
+            <VioraBrand />
+          </span>
           <Button variant="outlined" className={classes.logout} onClick={handleLogout} startIcon={<ExitToAppIcon />}>
             Salir
           </Button>
-        </Toolbar>
-      </AppBar>
+        </header>
 
-      <div className={classes.content}>
-        <section className={classes.hero}>
-          <Paper className={classes.heroPanel} elevation={0}>
-            <img className={classes.heroWatermark} src={vioraAssets.watermark} alt="" />
-            <div className={classes.eyebrow}>Portal paciente</div>
-            <Typography component="h1" className={classes.heading}>
-              Estudios y archivos clínicos disponibles.
-            </Typography>
-            <Typography className={classes.copy}>
-              Revisa tus cargas recientes, el estado del estudio y abre el visor cuando necesites consultar las imágenes.
-            </Typography>
-            <div className={classes.insightGrid}>
-              <div className={classes.insight}>
-                <div className={classes.insightValue}>1</div>
-                <Typography className={classes.insightLabel}>Estudio disponible</Typography>
-              </div>
-              <div className={classes.insight}>
-                <div className={classes.insightValue}>CT</div>
-                <Typography className={classes.insightLabel}>Modalidad principal</Typography>
-              </div>
-              <div className={classes.insight}>
-                <div className={classes.insightValue}>2026</div>
-                <Typography className={classes.insightLabel}>Actualizado recientemente</Typography>
+        <section className={classes.topGrid}>
+          <Paper className={`${classes.panel} ${classes.hero}`} elevation={0}>
+            <div className={classes.heroContent}>
+              <div className={classes.eyebrow}>Portal paciente</div>
+              <Typography component="h1" className={classes.heading}>
+                Tu salud, en <span className={classes.accent}>tus</span> manos.
+              </Typography>
+              <Typography className={classes.copy}>
+                Consulta tus estudios, revisa tus resultados y da seguimiento a tu salud de forma fácil y segura.
+              </Typography>
+              <div className={classes.actions}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.primaryAction}
+                  startIcon={<DescriptionIcon />}
+                  onClick={handleScrollStudies}
+                >
+                  Ver mis estudios
+                </Button>
+                <Button
+                  variant="outlined"
+                  className={classes.secondaryAction}
+                  startIcon={<CloudUploadIcon />}
+                  onClick={handleOpenViewer}
+                >
+                  Subir estudio
+                </Button>
               </div>
             </div>
+            <img className={classes.patientVisual} src={vioraAssets.paciente} alt="Paciente en visualización médica XR" />
           </Paper>
 
-          <Paper className={classes.statusPanel} elevation={0}>
+          <Paper className={`${classes.panel} ${classes.statusPanel}`} elevation={0}>
             <div className={classes.statusHeader}>
-              <Typography className={classes.sectionTitle}>Estado</Typography>
-              <Chip label="Listo" className={classes.statusBadge} />
+              <Typography component="h2" className={classes.sideTitle}>Estado general</Typography>
+              <Chip label="Todo en orden" className={classes.statusBadge} />
             </div>
-            <div className={classes.statusTrack}>
-              <div className={classes.step}>
-                <span className={classes.stepDot}><AssignmentTurnedInIcon fontSize="small" /></span>
+            <div className={classes.statusList}>
+              <div className={classes.statusItem}>
+                <span className={classes.iconBox}><CheckCircleOutlineIcon /></span>
                 <div>
-                  <Typography className={classes.stepTitle}>Estudio cargado</Typography>
-                  <Typography className={classes.stepText}>Los archivos están disponibles para visualización.</Typography>
+                  <div className={classes.statusName}>Estudios al día</div>
+                  <div className={classes.statusText}>No tienes estudios pendientes</div>
                 </div>
               </div>
-              <div className={classes.step}>
-                <span className={classes.stepDot}><TimelineIcon fontSize="small" /></span>
+              <div className={classes.statusItem}>
+                <span className={classes.iconBox}><CheckCircleOutlineIcon /></span>
                 <div>
-                  <Typography className={classes.stepTitle}>Revisión en curso</Typography>
-                  <Typography className={classes.stepText}>El médico puede abrir el visor y analizar las imágenes.</Typography>
+                  <div className={classes.statusName}>Resultados disponibles</div>
+                  <div className={classes.statusText}>Tienes 2 estudios con resultados</div>
                 </div>
               </div>
-              <div className={classes.step}>
-                <span className={classes.stepDot}><VisibilityIcon fontSize="small" /></span>
+              <div className={classes.statusItem}>
+                <span className={classes.iconBox}><EventIcon /></span>
                 <div>
-                  <Typography className={classes.stepTitle}>Visualización disponible</Typography>
-                  <Typography className={classes.stepText}>Puedes abrir el visor desde este portal de demostración.</Typography>
+                  <div className={classes.statusName}>Citas próximas</div>
+                  <div className={classes.statusText}>1 cita programada</div>
                 </div>
+                <KeyboardArrowRightIcon />
               </div>
             </div>
           </Paper>
         </section>
 
-        <section>
-          <div className={classes.sectionHeader}>
-            <div>
-              <Typography component="h2" className={classes.sectionTitle}>Mis estudios</Typography>
-              <Typography className={classes.sectionText}>Información simulada para validar la experiencia de VioraXR.</Typography>
-            </div>
-          </div>
+        <section className={classes.metricGrid}>
+          <MetricCard icon={<DescriptionIcon />} value="6" label="Estudios realizados" link="Ver historial" />
+          <MetricCard icon={<AssignmentTurnedInIcon />} value="2" label="Resultados disponibles" link="Ver resultados" tone="purple" />
+          <MetricCard icon={<EventIcon />} value="1" label="Cita próxima" link="Ver citas" tone="green" />
+          <MetricCard icon={<DescriptionIcon />} value="3" label="Documentos" link="Ver documentos" tone="yellow" />
+        </section>
 
-          <div className={classes.uploadGrid}>
+        <section className={classes.lowerGrid} id="patient-studies">
+          <Paper className={`${classes.panel} ${classes.studiesPanel}`} elevation={0}>
+            <Typography component="h2" className={classes.sectionTitle}>Mis estudios</Typography>
+            <Typography className={classes.sectionText}>Consulta tus estudios clínicos y da seguimiento a tus resultados.</Typography>
+
             <TableContainer component={Paper} className={classes.tableContainer} elevation={0}>
               <Table>
                 <TableHead className={classes.tableHead}>
                   <TableRow>
-                    <TableCell className={classes.headCell}>Registro</TableCell>
-                    <TableCell className={classes.headCell}>Estudio</TableCell>
-                    <TableCell className={classes.headCell}>Fecha</TableCell>
-                    <TableCell className={classes.headCell}>Archivos</TableCell>
-                    <TableCell className={classes.headCell}>Estado</TableCell>
-                    <TableCell className={classes.headCell} align="center">Accion</TableCell>
+                    <TableCell className={`${classes.headCell} ${classes.tableCell}`}>Estudio</TableCell>
+                    <TableCell className={`${classes.headCell} ${classes.tableCell}`}>Fecha</TableCell>
+                    <TableCell className={`${classes.headCell} ${classes.tableCell}`}>Estado</TableCell>
+                    <TableCell className={`${classes.headCell} ${classes.tableCell}`}>Resultados</TableCell>
+                    <TableCell className={`${classes.headCell} ${classes.tableCell}`} align="center">Acción</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {uploadRecords.map((row) => (
+                  {patientStudies.map((row) => (
                     <TableRow key={row.id} className={classes.row}>
-                      <TableCell className={classes.muted}>{row.id}</TableCell>
-                      <TableCell><span className={classes.studyName}>{row.study}</span></TableCell>
-                      <TableCell className={classes.muted}>{row.date}</TableCell>
-                      <TableCell className={classes.muted}>{row.files}</TableCell>
-                      <TableCell><Chip label={row.status} className={classes.chip} /></TableCell>
-                      <TableCell align="center">
-                        <Button variant="outlined" color="secondary" size="small" startIcon={<VisibilityIcon />} onClick={handleOpenViewer}>
-                          Abrir visor
+                      <TableCell className={classes.tableCell}>
+                        <div className={classes.studyIdentity}>
+                          <span className={`${classes.studyIcon} ${row.icon === 'purple' ? classes.studyIconPurple : ''}`}>
+                            <DescriptionIcon fontSize="small" />
+                          </span>
+                          <div>
+                            <div className={classes.studyName}>{row.study}</div>
+                            <div className={classes.muted}>{row.type}</div>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell className={`${classes.muted} ${classes.tableCell}`}>{row.date}</TableCell>
+                      <TableCell className={classes.tableCell}>
+                        <Chip label={row.status} className={`${classes.chip} ${classes.chipDone}`} />
+                      </TableCell>
+                      <TableCell className={classes.tableCell}>
+                        <Chip label={row.result} className={`${classes.chip} ${classes.chipResult}`} />
+                      </TableCell>
+                      <TableCell className={classes.tableCell} align="center">
+                        <Button
+                          variant="outlined"
+                          color="secondary"
+                          size="small"
+                          startIcon={<VisibilityIcon />}
+                          onClick={handleOpenViewer}
+                        >
+                          Ver
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -481,38 +637,45 @@ const PatientDashboard = () => {
               </Table>
             </TableContainer>
 
-            <div>
-              <Card className={classes.card} elevation={0}>
-                <CardContent className={classes.cardContent}>
-                  <Typography component="h3" className={classes.studyTitle}>
-                    Preparación para consulta
-                  </Typography>
-                  <Typography className={classes.studyText}>
-                    VioraXR está orientado a mejorar la comprensión espacial del estudio y facilitar conversaciones clínicas más claras.
-                  </Typography>
-                  <div className={classes.insightGrid}>
-                    <div className={classes.insight}>
-                      <div className={classes.insightValue}>3D</div>
-                      <Typography className={classes.insightLabel}>Exploración anatómica</Typography>
-                    </div>
-                    <div className={classes.insight}>
-                      <div className={classes.insightValue}>XR</div>
-                      <Typography className={classes.insightLabel}>Base inmersiva</Typography>
-                    </div>
-                    <div className={classes.insight}>
-                      <div className={classes.insightValue}>DICOM</div>
-                      <Typography className={classes.insightLabel}>Formato clínico</Typography>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              <div className={classes.brandCard} style={{ marginTop: 16 }}>
-                <img className={classes.brandImage} src={vioraAssets.boardVertical} alt="Diseno general VioraXR" />
-                <div className={classes.brandShade} />
-                <img className={classes.brandLogo} src={vioraAssets.logoAlt} alt="Logo VioraXR" />
+            <span className={classes.tableLink}>Ver todos mis estudios <ArrowForwardIcon fontSize="small" /></span>
+          </Paper>
+
+          <aside className={classes.sideColumn}>
+            <Paper className={`${classes.panel} ${classes.infoPanel}`} elevation={0}>
+              <Typography component="h2" className={classes.infoTitle}>
+                <EventIcon color="secondary" /> Mi próxima cita
+              </Typography>
+              <div className={classes.appointmentCard}>
+                <div className={classes.dateBox}>
+                  <span>
+                    <span className={classes.dateDay}>12</span>
+                    <span className={classes.dateMonth}>MAY</span>
+                  </span>
+                </div>
+                <div>
+                  <div className={classes.infoName}>Consulta de resultados</div>
+                  <div className={classes.infoText}>10:00 AM</div>
+                  <div className={classes.infoText}>Dr. Carlos Mendoza</div>
+                </div>
+                <KeyboardArrowRightIcon />
               </div>
-            </div>
-          </div>
+              <span className={classes.cardLink}>Ver todas mis citas <ArrowForwardIcon fontSize="small" /></span>
+            </Paper>
+
+            <Paper className={`${classes.panel} ${classes.infoPanel}`} elevation={0}>
+              <Typography component="h2" className={classes.infoTitle}>
+                <FavoriteBorderIcon className={classes.adviceIcon} /> Consejos para tu salud
+              </Typography>
+              <div className={classes.adviceBody}>
+                <span className={classes.adviceBox}><FavoriteBorderIcon /></span>
+                <div>
+                  <div className={classes.infoName}>Mantén tus estudios al día</div>
+                  <div className={classes.infoText}>La prevención y el seguimiento oportuno son clave para tu bienestar.</div>
+                </div>
+              </div>
+              <span className={classes.cardLink}>Ver recomendaciones <ArrowForwardIcon fontSize="small" /></span>
+            </Paper>
+          </aside>
         </section>
       </div>
     </main>
