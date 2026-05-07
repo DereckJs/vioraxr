@@ -16,6 +16,7 @@ import Measurements from './components/Measurements'
 import OpenMultipleFilesDlg from './components/OpenMultipleFilesDlg'
 import Settings from './components/Settings'
 import Chatbot from './components/Chatbot'
+import VioraBrand from './components/VioraBrand'
 import AppBar from '@material-ui/core/AppBar'
 import Collapse from '@material-ui/core/Collapse'
 import Button from '@material-ui/core/Button'
@@ -141,13 +142,13 @@ log()
 //localStorage.setItem("debug", "cornerstoneTools")
 
 const drawerWidth = 240
-const iconColor = '#FFFFFF'
-const activeColor = 'rgba(0, 255, 0, 1.0)'
+const iconColor = '#CDEEFF'
+const activeColor = '#00D4FF'
 
 const styles = theme => ({
   '@global': {
     body: {
-        backgroundColor: theme.palette.common.black,
+        backgroundColor: '#050b17',
     },
   },
 
@@ -160,20 +161,107 @@ const styles = theme => ({
   },
 
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(1),
+    color: '#cdeeff',
+    border: '1px solid rgba(145, 231, 255, 0.12)',
+    backgroundColor: 'rgba(255,255,255,0.035)',
+    '&:hover': {
+      backgroundColor: 'rgba(0, 212, 255, 0.1)',
+    },
   },
 
   title: {
     flexGrow: 1,
   },
 
+  viewerShell: {
+    minHeight: '100dvh',
+    color: '#f8fbff',
+    background:
+      'radial-gradient(circle at 15% 0%, rgba(0, 212, 255, 0.12), transparent 28%), radial-gradient(circle at 86% 0%, rgba(139, 92, 246, 0.12), transparent 30%), #050b17',
+  },
+
   appBar: {
     position: 'relative',
     zIndex: theme.zIndex.drawer + 1,
+    background: 'rgba(5, 11, 23, 0.86)',
+    borderBottom: '1px solid rgba(145, 231, 255, 0.14)',
+    boxShadow: '0 18px 50px rgba(0, 0, 0, 0.22)',
+    backdropFilter: 'blur(18px)',
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+  },
+
+  viewerToolbar: {
+    minHeight: 56,
+    gap: theme.spacing(1),
+    paddingLeft: theme.spacing(1.5),
+    paddingRight: theme.spacing(1.5),
+  },
+
+  dashboardButton: {
+    marginRight: theme.spacing(0.5),
+    color: '#cdeeff',
+    borderColor: 'rgba(145, 231, 255, 0.18)',
+    backgroundColor: 'rgba(255,255,255,0.035)',
+    '&:hover': {
+      backgroundColor: 'rgba(0, 212, 255, 0.09)',
+      borderColor: 'rgba(0, 212, 255, 0.34)',
+    },
+  },
+
+  viewerTitle: {
+    flexGrow: 1,
+    minWidth: 0,
+    color: '#cdeeff',
+    fontSize: 12,
+    fontWeight: 700,
+    letterSpacing: 0.7,
+    textTransform: 'uppercase',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+
+  viewerTitleMuted: {
+    color: '#7f9caf',
+    marginRight: theme.spacing(1),
+  },
+
+  toolbarAction: {
+    color: '#cdeeff',
+    borderRadius: 12,
+    '&:hover': {
+      backgroundColor: 'rgba(0, 212, 255, 0.1)',
+    },
+  },
+
+  viewerBody: {
+    height: 'calc(100dvh - 56px)',
+    padding: 10,
+    background:
+      'linear-gradient(180deg, rgba(8, 23, 41, 0.64), rgba(5, 11, 23, 0.98))',
+  },
+
+  drawerPaper: {
+    width: drawerWidth,
+    backgroundColor: '#071527',
+    backgroundImage:
+      'linear-gradient(180deg, rgba(0, 212, 255, 0.06), rgba(139, 92, 246, 0.035))',
+    borderRight: '1px solid rgba(145, 231, 255, 0.16)',
+    color: '#dcefff',
+    boxShadow: '18px 0 60px rgba(0,0,0,0.26)',
+  },
+
+  rightDrawerPaper: {
+    backgroundColor: '#071527',
+    backgroundImage:
+      'linear-gradient(180deg, rgba(0, 212, 255, 0.05), rgba(139, 92, 246, 0.035))',
+    borderLeft: '1px solid rgba(145, 231, 255, 0.16)',
+    color: '#dcefff',
+    boxShadow: '-18px 0 60px rgba(0,0,0,0.26)',
   },
 
   appBarShift: {
@@ -226,6 +314,7 @@ const styles = theme => ({
   listItemText: {
     fontSize: '0.85em',
     marginLeft: '-20px',
+    color: '#cdeeff',
   },
 
 })
@@ -1043,36 +1132,36 @@ class App extends PureComponent {
         return null
       else 
         return (
-          <Typography variant="overline" className={classes.title}>
-            <strong>VIORA</strong> <strong style={{ color: '#00E5FF' }}>XR</strong>
-          </Typography>          
+          <div className={classes.title}>
+            <VioraBrand size="compact" />
+          </div>
         )
     } else {
       if (isOpen) {
         const plane = this.getStringVisiblePlane()
         if (this.state.sliceMax > 1 && this.mprPlane !== plane && this.mprPlane !== '') {
           return (
-            <Typography variant="overline" className={classes.title}>
-              {'MPR '+plane}
+            <Typography variant="overline" className={classes.viewerTitle}>
+              <span className={classes.viewerTitleMuted}>Modo</span>{'MPR '+plane}
             </Typography>
           )        
         }
         return (
-          <Typography variant="overline" className={classes.title}>
-            {dcmViewer.filename}
+          <Typography variant="overline" className={classes.viewerTitle}>
+            <span className={classes.viewerTitleMuted}>Estudio activo</span>{dcmViewer.filename}
           </Typography>
         )
       } else if (this.props.dicomdir !== null) {
         return (
-          <Typography variant="overline" className={classes.title}>
-            {this.props.dicomdir.dicomdir.webkitRelativePath}
+          <Typography variant="overline" className={classes.viewerTitle}>
+            <span className={classes.viewerTitleMuted}>DICOMDIR</span>{this.props.dicomdir.dicomdir.webkitRelativePath}
           </Typography>
         )
       } else
         return (
-          <Typography variant="overline" className={classes.title}>
-            <strong>VIORA</strong> <strong style={{ color: '#00E5FF' }}>XR</strong>
-          </Typography>
+          <div className={classes.title}>
+            <VioraBrand size="compact" />
+          </div>
         )
     }
   }
@@ -1855,10 +1944,10 @@ class App extends PureComponent {
     //console.log('mprMode: ', this.state.mprMode)
     
     return (
-      <div>
+      <div className={classes.viewerShell}>
         <AppBar className={classes.appBar} position='static' elevation={0}>
-          <Toolbar variant="dense">
-            <Button color="inherit" onClick={() => this.props.history.push(localStorage.getItem('user_role') === 'doctor' ? '/doctor' : '/patient')} style={{ marginRight: '10px' }}>
+          <Toolbar variant="dense" className={classes.viewerToolbar}>
+            <Button variant="outlined" className={classes.dashboardButton} onClick={() => this.props.history.push(localStorage.getItem('user_role') === 'doctor' ? '/doctor' : '/patient')}>
               Dashboard
             </Button>
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={this.toggleMainMenu}>
@@ -1868,7 +1957,7 @@ class App extends PureComponent {
             
             <div className={classes.grow} />
             { !isOpen && !isDicomdir ? (
-              <IconButton onClick={this.showAbout}>
+              <IconButton className={classes.toolbarAction} onClick={this.showAbout}>
                 <Icon path={mdiInformationOutline} size={iconSize} color={iconColor} />
               </IconButton> 
              ) : null
@@ -1883,7 +1972,7 @@ class App extends PureComponent {
             */}
             { isOpen && dcmViewer.numberOfFrames > 1 &&  isOpen ? (
               <Tooltip title="Cine Player">
-                <IconButton onClick={this.cinePlayer}>
+                <IconButton className={classes.toolbarAction} onClick={this.cinePlayer}>
                   <Icon path={mdiVideo} size={iconSize} color={iconColor} />
                 </IconButton> 
               </Tooltip>
@@ -1891,7 +1980,7 @@ class App extends PureComponent {
             }
             { isOpen ? (
               <Tooltip title="Reset Image">
-                <IconButton onClick={this.resetImage}>
+                <IconButton className={classes.toolbarAction} onClick={this.resetImage}>
                   <Icon path={mdiRefresh} size={iconSize} color={iconColor} />
                 </IconButton>
               </Tooltip>
@@ -1899,7 +1988,7 @@ class App extends PureComponent {
             }            
             { isOpen ? (
               <Tooltip title="Tools">
-                <IconButton onClick={this.handleToolsPanel}>
+                <IconButton className={classes.toolbarAction} onClick={this.handleToolsPanel}>
                   <Icon path={mdiTools} size={iconSize} color={iconColor} />
                 </IconButton>
               </Tooltip>
@@ -1907,7 +1996,7 @@ class App extends PureComponent {
             }            
             { isOpen ? (
               <Tooltip title="Save Screenshot">
-                <IconButton color="inherit" onClick={this.saveShot}>
+                <IconButton className={classes.toolbarAction} color="inherit" onClick={this.saveShot}>
                   <Icon path={mdiCamera} size={iconSize} color={iconColor} />
                 </IconButton>
               </Tooltip>
@@ -1923,7 +2012,7 @@ class App extends PureComponent {
             */}              
             { isOpen ? (
               <Tooltip title="Measurements">
-                <IconButton color="inherit" onClick={this.toggleMeasure}>
+                <IconButton className={classes.toolbarAction} color="inherit" onClick={this.toggleMeasure}>
                   <Icon path={mdiFileCad} size={iconSize} color={iconColor} />
                 </IconButton>
               </Tooltip>
@@ -1931,7 +2020,7 @@ class App extends PureComponent {
             }  
             { isOpen && dcmViewer.isDicom ? (
               <Tooltip title="Dicom Header">
-                <IconButton color="inherit" onClick={this.toggleHeader}>
+                <IconButton className={classes.toolbarAction} color="inherit" onClick={this.toggleHeader}>
                   <Icon path={mdiFileDocument} size={iconSize} color={iconColor} />
                 </IconButton>
               </Tooltip>
@@ -1939,7 +2028,7 @@ class App extends PureComponent {
             }  
             { isOpen && dcmViewer.isDicom ? (
               <Tooltip title="AI Chatbot">
-                <IconButton color="inherit" onClick={this.toggleChatbot}>
+                <IconButton className={classes.toolbarAction} color="inherit" onClick={this.toggleChatbot}>
                   <Icon path={mdiRobot} size={iconSize} color={iconColor} />
                 </IconButton>
               </Tooltip>
@@ -1947,7 +2036,7 @@ class App extends PureComponent {
             }  
             { isDicomdir ? (
               <Tooltip title="DICOMDIR">
-                <IconButton color="inherit" onClick={this.toggleDicomdir}>
+                <IconButton className={classes.toolbarAction} color="inherit" onClick={this.toggleDicomdir}>
                   <Icon path={mdiFolderOpen} size={iconSize} color={iconColor} />
                 </IconButton>
               </Tooltip>
@@ -1955,7 +2044,7 @@ class App extends PureComponent {
             }    
             { (isOpen && this.isMultipleFiles) || visibleMprOrthogonal ? (
               <Tooltip title="Explorer">
-                <IconButton color="inherit" onClick={this.toggleExplorer}>
+                <IconButton className={classes.toolbarAction} color="inherit" onClick={this.toggleExplorer}>
                   <Icon path={mdiAnimationOutline} size={iconSize} color={iconColor} />
                 </IconButton>
               </Tooltip>
@@ -1963,7 +2052,7 @@ class App extends PureComponent {
             }             
             { isOpen ? (
               <Tooltip title="Sandbox File Manager">
-                <IconButton color="inherit" onClick={this.toggleFileManager}>
+                <IconButton className={classes.toolbarAction} color="inherit" onClick={this.toggleFileManager}>
                   <Icon path={mdiFileCabinet} size={iconSize} color={iconColor} />
                 </IconButton>
               </Tooltip>
@@ -1975,6 +2064,7 @@ class App extends PureComponent {
         <Drawer 
           variant="persistent"
           open={visibleMainMenu} 
+          classes={{paper: classes.drawerPaper}}
           style={{position:'relative', zIndex: 1}}
           onClose={this.toggleMainMenu}
         >
@@ -2277,6 +2367,7 @@ class App extends PureComponent {
           anchor='right'
           open={visibleHeader}
           onClose={this.toggleHeader}
+          classes={{paper: classes.rightDrawerPaper}}
         >
           { visibleHeader ? <DicomHeader dcmViewer={dcmViewer} classes={classes} color={iconColor} /> : null } 
         </Drawer>
@@ -2286,6 +2377,7 @@ class App extends PureComponent {
           anchor='right'
           open={visibleChatbot}
           onClose={this.toggleChatbot}
+          classes={{paper: classes.rightDrawerPaper}}
           PaperProps={{ style: { width: '320px' } }}
         >
           { visibleChatbot ? <Chatbot dcmViewer={dcmViewer} /> : null } 
@@ -2296,6 +2388,7 @@ class App extends PureComponent {
           anchor='right'
           open={visibleMeasure}
           onClose={this.toggleMeasure}
+          classes={{paper: classes.rightDrawerPaper}}
         >
           <div style={{marginTop: '48px'}}>
             <Toolbar variant="dense">
@@ -2321,6 +2414,7 @@ class App extends PureComponent {
           anchor='right'
           open={visibleToolbox}
           onClose={this.toggleToolbox}
+          classes={{paper: classes.rightDrawerPaper}}
         >
           <div style={{marginTop: '48px'}}>
             <div>  
@@ -2334,6 +2428,7 @@ class App extends PureComponent {
           anchor={getSettingsDicomdirView()}
           open={visibleDicomdir}
           onClose={this.toggleDicomdir}
+          classes={{paper: classes.rightDrawerPaper}}
         >
           <div>
             <div>  
@@ -2347,6 +2442,7 @@ class App extends PureComponent {
           anchor={getSettingsFsView()}
           open={visibleFileManager}
           onClose={this.toggleFileManager}
+          classes={{paper: classes.rightDrawerPaper}}
         >
           <div>
             <div>
@@ -2497,7 +2593,7 @@ class App extends PureComponent {
           message="Volume building, wait please ..."
         />
 
-        <div style={{height: 'calc(100vh - 48px)'}}>
+        <div className={classes.viewerBody}>
           {this.buildLayoutGrid()}  
         </div>
 
@@ -2506,6 +2602,7 @@ class App extends PureComponent {
           anchor='right'
           open={visibleExplorer}
           onClose={this.toggleExplorer}
+          classes={{paper: classes.rightDrawerPaper}}
         >
           <div>
             <div>
