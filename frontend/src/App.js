@@ -16,6 +16,7 @@ import Measurements from './components/Measurements'
 import OpenMultipleFilesDlg from './components/OpenMultipleFilesDlg'
 import Settings from './components/Settings'
 import Chatbot from './components/Chatbot'
+import Dicom3DViewer from './components/Dicom3DViewer'
 import VioraBrand from './components/VioraBrand'
 import AppBar from '@material-ui/core/AppBar'
 import Collapse from '@material-ui/core/Collapse'
@@ -742,6 +743,21 @@ class App extends PureComponent {
       })    
   }
 
+  mpr3D = () => {
+    const visible = !this.state.visibleMpr3D
+    this.setState({ visibleMpr3D: visible })
+    if (visible) {
+      this.setState({
+        visibleMeasure: false,
+        visibleHeader: false,
+        visibleToolbox: false,
+        visibleDicomdir: false,
+        visibleFileManager: false,
+        visibleExplorer: false,
+      })
+    }
+  }
+
 
   toggleToolbox = () => {
     const visible = !this.state.visibleToolbox
@@ -944,9 +960,10 @@ class App extends PureComponent {
       this.setState({openImageEdit: false, 
                     openTools: false, 
                     mprMenu: false, 
+                    visibleMpr3D: false,
                     visibleToolbox: false, 
                     visibleMeasure: false, 
-                    visibleHeader: false, 
+                    visibleHeader: false,
                     visibleDicomdir: false}, () => { 
                     })
       this.changeLayout(1, 1)
@@ -1616,10 +1633,6 @@ class App extends PureComponent {
     return this.mprPlane  
   }
 
-  mpr3D = () => {
-    
-  }
-
   mprOrthogonal = () => {
     const visibleMprOrthogonal = this.state.visibleMprOrthogonal
     if (!visibleMprOrthogonal) {
@@ -1921,7 +1934,7 @@ class App extends PureComponent {
     const visibleOpenMultipleFilesDlg = this.state.visibleOpenMultipleFilesDlg
     const visibleLayout = Boolean(this.state.anchorElLayout)
     const visibleVolumeBuilding = this.state.visibleVolumeBuilding
-    //const visibleMpr3D = this.state.visibleMpr3D
+    const visibleMpr3D = this.state.visibleMpr3D
     const visibleMprOrthogonal = this.state.visibleMprOrthogonal
     const visibleMprCoronal = this.state.visibleMprCoronal
     const visibleMprSagittal = this.state.visibleMprSagittal
@@ -2034,6 +2047,11 @@ class App extends PureComponent {
               </Tooltip>
               ) : null
             }  
+            <Tooltip title="3D Reconstruction">
+              <IconButton className={classes.toolbarAction} color="inherit" onClick={this.mpr3D}>
+                <Icon path={mdiAxisArrow} size={iconSize} color={visibleMpr3D ? activeColor : iconColor} />
+              </IconButton>
+            </Tooltip>
             { isDicomdir ? (
               <Tooltip title="DICOMDIR">
                 <IconButton className={classes.toolbarAction} color="inherit" onClick={this.toggleDicomdir}>
@@ -2147,7 +2165,6 @@ class App extends PureComponent {
 
               <Collapse in={mprMenu} timeout="auto" unmountOnExit>
                 <List dense={true} component="div">
-{/* 
                   <ListItem button style={{paddingLeft: 40}} onClick={() => this.mpr3D()}>
                     {visibleMpr3D ? <ListItemIcon style={{marginLeft: '-10px'}}><Icon path={mdiCheck} size={'1.0rem'} color={iconColor} /></ListItemIcon> : null}
                     <ListItemText 
@@ -2156,7 +2173,6 @@ class App extends PureComponent {
                         <Typography type="body1" style={{fontSize: '0.80em', marginLeft: '-23px'}}>3D</Typography>
                       } />
                   </ListItem>
-*/}
                   <ListItem button style={{paddingLeft: 40}} onClick={() => this.mprOrthogonal()}>
                     {visibleMprOrthogonal ? <ListItemIcon style={{marginLeft: '-10px'}}><Icon path={mdiCheck} size={'1.0rem'} color={iconColor} /></ListItemIcon> : null}
                     <ListItemText 
@@ -2380,7 +2396,18 @@ class App extends PureComponent {
           classes={{paper: classes.rightDrawerPaper}}
           PaperProps={{ style: { width: '320px' } }}
         >
-          { visibleChatbot ? <Chatbot dcmViewer={dcmViewer} /> : null } 
+          { visibleChatbot ? <Chatbot dcmViewer={dcmViewer} threeDVisible={visibleMpr3D} /> : null } 
+        </Drawer>
+
+        <Drawer
+          variant="persistent"
+          anchor='right'
+          open={visibleMpr3D}
+          onClose={this.mpr3D}
+          classes={{paper: classes.rightDrawerPaper}}
+          PaperProps={{ style: { width: 'min(720px, 48vw)' } }}
+        >
+          { visibleMpr3D ? <Dicom3DViewer dcmViewer={dcmViewer} /> : null } 
         </Drawer>
 
         <Drawer

@@ -124,7 +124,10 @@ class DicomViewer extends React.Component {
       dcmRef(this)          
       this.layoutIndex = this.props.index
 
-      document.getElementById(`viewer-${this.props.index}`).addEventListener("wheel", this.handlerMouseScroll)
+      const viewerElement = document.getElementById(`viewer-${this.props.index}`)
+      if (viewerElement) {
+        viewerElement.addEventListener("wheel", this.handlerMouseScroll)
+      }
     }
 
     componentWillUnmount() {

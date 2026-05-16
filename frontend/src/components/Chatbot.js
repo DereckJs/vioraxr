@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   List,
-  ListItem,
-  ListItemText,
-  TextField,
   Button,
+  TextField,
   Toolbar,
   Typography,
   Paper,
@@ -82,10 +80,30 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     backgroundColor: theme.palette.background.default,
     borderBottom: `1px solid ${theme.palette.divider}`,
+  },
+  quickPrompts: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: theme.spacing(1),
+    padding: theme.spacing(1),
+    borderTop: `1px solid ${theme.palette.divider}`,
+    backgroundColor: theme.palette.background.default,
+  },
+  quickPrompt: {
+    color: theme.palette.text.primary,
+    borderColor: theme.palette.divider,
+    fontSize: 11,
   }
 }));
 
-const Chatbot = ({ dcmViewer }) => {
+const QUICK_PROMPTS = [
+  '¿Qué estoy viendo?',
+  'Explícame esta reconstrucción 3D',
+  '¿Qué limitaciones tiene esta vista?',
+  'Resume la metadata del estudio',
+];
+
+const Chatbot = ({ dcmViewer, threeDVisible }) => {
   const classes = useStyles();
   const [messages, setMessages] = useState([
     { role: 'assistant', content: 'Hola, soy tu asistente radiológico. ¿En qué puedo ayudarte con este estudio?' }
@@ -106,6 +124,13 @@ const Chatbot = ({ dcmViewer }) => {
         return val ? val.trim() : 'Desconocido';
       };
 
+      const files = Array.isArray(dcmViewer.files) ? dcmViewer.files : [];
+      const reconstructionType = threeDVisible
+        ? files.length > 1
+          ? 'Reconstrucción 3D aproximada por nube de voxeles a partir de una serie por capas.'
+          : 'Vista 3D simple: la imagen 2D se muestra como un plano con relieve por intensidad.'
+        : 'Vista 2D/MPR tradicional del visor DICOM.';
+
       const context = `
 Contexto del estudio DICOM actual:
 - Patient Name: ${getStr('x00100010')}
@@ -115,6 +140,10 @@ Contexto del estudio DICOM actual:
 - Study ID: ${getStr('x00200010')}
 - Body Part Examined: ${getStr('x00180015')}
 - Manufacturer: ${getStr('x00080070')}
+- Viewer Mode: ${threeDVisible ? '3D' : '2D/MPR'}
+- Reconstruction: ${reconstructionType}
+- Loaded Slices: ${files.length > 1 ? files.length : 1}
+- Image Size: ${dcmViewer.image.columns || 'Desconocido'} x ${dcmViewer.image.rows || 'Desconocido'}
       `;
       return context;
     } catch (e) {
@@ -136,9 +165,15 @@ Contexto del estudio DICOM actual:
       const dicomContext = getDicomContext();
       const systemPrompt = {
         role: 'system',
-        content: `Eres un asistente experto en radiología para un visor DICOM web.
+        content: `Eres un asistente experto en visualización radiológica para un visor DICOM web.
         Usa la siguiente información de la imagen que el usuario está viendo para responder sus preguntas:
-        ${dicomContext}`
+        ${dicomContext}
+
+        Reglas importantes:
+        - Explica lo que se está visualizando y cómo interpretar la interfaz.
+        - No des diagnósticos clínicos definitivos.
+        - Si el usuario pregunta por la reconstrucción 3D, aclara que es una vista aproximada para exploración y demo, no una reconstrucción clínica validada.
+        - Responde en español claro y directo.`
       };
 
       const apiMessages = [systemPrompt, ...newMessages.map(m => ({ role: m.role, content: m.content }))];
@@ -232,6 +267,20 @@ Contexto del estudio DICOM actual:
           )}
         </List>
       </PerfectScrollbar>
+
+      <div className={classes.quickPrompts}>
+        {QUICK_PROMPTS.map((prompt) => (
+          <Button
+            key={prompt}
+            size="small"
+            variant="outlined"
+            className={classes.quickPrompt}
+            onClick={() => setInput(prompt)}
+          >
+            {prompt}
+          </Button>
+        ))}
+      </div>
 
       <div className={classes.inputArea}>
         <TextField
