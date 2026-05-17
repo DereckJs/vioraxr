@@ -8,11 +8,8 @@ import { useHistory } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import TimelineIcon from '@material-ui/icons/Timeline';
-import ThreeDRotationIcon from '@material-ui/icons/ThreeDRotation';
-import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import CheckIcon from '@material-ui/icons/Check';
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import VioraBrand, { vioraAssets } from './VioraBrand';
 
 const useStyles = makeStyles((theme) => ({
@@ -163,58 +160,7 @@ const useStyles = makeStyles((theme) => ({
       margin: '0 auto',
     },
   },
-  statsRow: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
-    gap: theme.spacing(1.5),
-    [theme.breakpoints.down('sm')]: {
-      gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-    },
-    [theme.breakpoints.down('xs')]: {
-      gridTemplateColumns: '1fr',
-    },
-  },
-  statCard: {
-    minHeight: 116,
-    padding: theme.spacing(2.1),
-    display: 'grid',
-    gridTemplateColumns: '48px 1fr',
-    gap: theme.spacing(1.5),
-    alignItems: 'start',
-  },
-  iconBox: {
-    width: 48,
-    height: 48,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#00d4ff',
-    borderRadius: 13,
-    background: 'linear-gradient(145deg, rgba(0, 212, 255, 0.18), rgba(0, 107, 255, 0.08))',
-  },
-  statValue: {
-    display: 'block',
-    color: '#f8fbff',
-    fontSize: 30,
-    lineHeight: 1,
-    fontWeight: 800,
-    fontVariantNumeric: 'tabular-nums',
-  },
-  statLabel: {
-    marginTop: theme.spacing(0.6),
-    color: '#c2d6e4',
-    fontSize: 13,
-  },
-  statDelta: {
-    display: 'block',
-    marginTop: theme.spacing(1.4),
-    color: '#00ff98',
-    fontSize: 13,
-    fontWeight: 800,
-  },
-  statWarning: {
-    color: '#ff4dbe',
-  },
+
   registry: {
     padding: theme.spacing(2.2),
   },
@@ -253,34 +199,7 @@ const useStyles = makeStyles((theme) => ({
       display: 'inline-block',
     },
   },
-  recordSummary: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-    gap: theme.spacing(1.4),
-    marginBottom: theme.spacing(1.7),
-    [theme.breakpoints.down('xs')]: {
-      gridTemplateColumns: '1fr',
-    },
-  },
-  recordCard: {
-    padding: theme.spacing(1.5, 1.7),
-    borderRadius: 12,
-    border: '1px solid rgba(94, 183, 255, 0.12)',
-    background:
-      'linear-gradient(145deg, rgba(11, 34, 58, 0.72), rgba(8, 21, 39, 0.5))',
-  },
-  recordLabel: {
-    display: 'block',
-    color: '#8ea8ba',
-    fontSize: 12,
-  },
-  recordValue: {
-    display: 'block',
-    marginTop: 6,
-    color: '#f8fbff',
-    fontSize: 17,
-    fontWeight: 800,
-  },
+
   tableContainer: {
     overflow: 'hidden',
     borderRadius: 13,
@@ -314,15 +233,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#a8bdcd',
     fontSize: 13,
   },
-  tableLink: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: theme.spacing(2),
-    color: '#00d4ff',
-    fontWeight: 700,
-    textDecoration: 'none',
-    cursor: 'default',
-  },
+
   rightColumn: {
     display: 'grid',
     gridTemplateRows: 'auto 326px 1fr auto',
@@ -436,14 +347,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 16,
     fontWeight: 800,
   },
-  sideLink: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    gap: theme.spacing(1),
-    color: '#00d4ff',
-    fontWeight: 700,
-  },
+
   activity: {
     padding: theme.spacing(2.6),
   },
@@ -535,24 +439,7 @@ const statusClass = (classes, priority) => {
   return `${classes.chip} ${classes.chipReview}`;
 };
 
-const StatCard = ({ icon, value, label, delta, warning }) => {
-  const classes = useStyles();
 
-  return (
-    <Paper className={`${classes.panel} ${classes.statCard}`} elevation={0}>
-      <span className={classes.iconBox}>{icon}</span>
-      <div>
-        <span className={classes.statValue}>{value}</span>
-        <Typography className={classes.statLabel}>{label}</Typography>
-        {delta && (
-          <span className={`${classes.statDelta} ${warning ? classes.statWarning : ''}`}>
-            {delta}
-          </span>
-        )}
-      </div>
-    </Paper>
-  );
-};
 
 const DoctorDashboard = () => {
   const classes = useStyles();
@@ -612,36 +499,26 @@ const DoctorDashboard = () => {
                 <span><span className={classes.breakdownValue}>4</span>Pendientes</span>
               </div>
             </div>
-            <span className={classes.sideLink}>Ver todos los estudios <ArrowForwardIcon fontSize="small" /></span>
           </Paper>
 
           <Paper className={`${classes.panel} ${classes.activity}`} elevation={0}>
-            <Typography component="h2" className={classes.activityTitle}>Actividad reciente</Typography>
+            <Typography component="h2" className={classes.activityTitle}>Buzón de notificaciones</Typography>
             <div className={classes.activityItem}>
-              <span className={classes.activityIcon}><CloudUploadIcon /></span>
+              <span className={`${classes.activityIcon} ${classes.activityIconBlue}`}><NotificationsActiveIcon /></span>
               <div>
-                <div className={classes.activityName}>Estudio cargado</div>
-                <div className={classes.activityDesc}>MRI Brain - Ana Sofía Pérez</div>
+                <div className={classes.activityName}>Actualización del sistema</div>
+                <div className={classes.activityDesc}>El visor XR recibirá mejoras esta noche.</div>
               </div>
-              <span className={classes.activityTime}>Hoy, 09:42</span>
+              <span className={classes.activityTime}>Hoy</span>
             </div>
             <div className={classes.activityItem}>
-              <span className={`${classes.activityIcon} ${classes.activityIconBlue}`}><VisibilityIcon /></span>
+              <span className={`${classes.activityIcon} ${classes.activityIconPurple}`}><MailOutlineIcon /></span>
               <div>
-                <div className={classes.activityName}>Estudio visualizado</div>
-                <div className={classes.activityDesc}>CT Abdomen - Carlos Mendoza</div>
+                <div className={classes.activityName}>Alerta médica</div>
+                <div className={classes.activityDesc}>Revisión urgente para CT Tórax.</div>
               </div>
-              <span className={classes.activityTime}>Hoy, 09:15</span>
+              <span className={classes.activityTime}>Ayer</span>
             </div>
-            <div className={classes.activityItem}>
-              <span className={`${classes.activityIcon} ${classes.activityIconPurple}`}><CheckIcon /></span>
-              <div>
-                <div className={classes.activityName}>Informe completado</div>
-                <div className={classes.activityDesc}>CT Tórax - Luis Ramírez</div>
-              </div>
-              <span className={classes.activityTime}>Ayer, 18:33</span>
-            </div>
-            <span className={classes.sideLink}>Ver toda la actividad <ArrowForwardIcon fontSize="small" /></span>
           </Paper>
 
           <Button variant="outlined" className={`${classes.logout} ${classes.sidebarLogout}`} onClick={handleLogout} startIcon={<ExitToAppIcon />}>
@@ -682,12 +559,7 @@ const DoctorDashboard = () => {
             <img className={classes.medicalVisual} src={vioraAssets.medico} alt="Visual médico XR con anatomía holográfica" />
           </Paper>
 
-          <section className={classes.statsRow}>
-            <StatCard icon={<TimelineIcon />} value="18" label="Revisiones completadas" delta="+12% vs. semana pasada" />
-            <StatCard icon={<VisibilityIcon />} value="6" label="Pendientes de análisis" delta="+3 nuevos" warning />
-            <StatCard icon={<ThreeDRotationIcon />} value="3" label="Casos preparados para XR" delta="Listos para visualizar" />
-            <StatCard icon={<LocalHospitalIcon />} value="1" label="Hallazgo prioritario" delta="Requiere atención" warning />
-          </section>
+
 
           <Paper className={`${classes.panel} ${classes.registry}`} elevation={0}>
             <div className={classes.registryHeader}>
@@ -698,20 +570,7 @@ const DoctorDashboard = () => {
               <Chip label="DICOM viewer activo" className={classes.activeChip} />
             </div>
 
-            <div className={classes.recordSummary}>
-              <div className={classes.recordCard}>
-                <span className={classes.recordLabel}>Pacientes registrados</span>
-                <span className={classes.recordValue}>4 activos</span>
-              </div>
-              <div className={classes.recordCard}>
-                <span className={classes.recordLabel}>Archivos cargados</span>
-                <span className={classes.recordValue}>492 imágenes</span>
-              </div>
-              <div className={classes.recordCard}>
-                <span className={classes.recordLabel}>Última carga</span>
-                <span className={classes.recordValue}>Hoy, 09:42</span>
-              </div>
-            </div>
+
 
             <TableContainer component={Paper} className={classes.tableContainer} elevation={0}>
               <Table>
@@ -756,7 +615,7 @@ const DoctorDashboard = () => {
               </Table>
             </TableContainer>
 
-            <span className={classes.tableLink}>Ver todos los registros <ArrowForwardIcon fontSize="small" /></span>
+
           </Paper>
         </div>
       </div>

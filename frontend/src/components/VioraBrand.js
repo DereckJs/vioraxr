@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
   },
   compact: {
     '& $image': {
-      width: 98,
+      width: 100,
     },
   },
   large: {

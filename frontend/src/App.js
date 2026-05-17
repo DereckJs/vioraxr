@@ -37,6 +37,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import MenuIcon from '@material-ui/icons/Menu'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import Popover from '@material-ui/core/Popover'
 import Slider from '@material-ui/core/Slider'
 import Snackbar from '@material-ui/core/Snackbar'
@@ -163,6 +164,7 @@ const styles = theme => ({
 
   menuButton: {
     marginRight: theme.spacing(1),
+    marginLeft: 15,
     color: '#cdeeff',
     border: '1px solid rgba(145, 231, 255, 0.12)',
     backgroundColor: 'rgba(255,255,255,0.035)',
@@ -202,14 +204,20 @@ const styles = theme => ({
     paddingRight: theme.spacing(1.5),
   },
 
-  dashboardButton: {
-    marginRight: theme.spacing(0.5),
-    color: '#cdeeff',
-    borderColor: 'rgba(145, 231, 255, 0.18)',
-    backgroundColor: 'rgba(255,255,255,0.035)',
+  returnButtonContainer: {
+    padding: theme.spacing(2),
+    marginTop: 'auto',
+  },
+  returnButton: {
+    width: '100%',
+    color: '#ff4d4f',
+    borderColor: 'rgba(255, 77, 79, 0.5)',
+    borderRadius: 20,
+    textTransform: 'none',
+    fontWeight: 600,
     '&:hover': {
-      backgroundColor: 'rgba(0, 212, 255, 0.09)',
-      borderColor: 'rgba(0, 212, 255, 0.34)',
+      backgroundColor: 'rgba(255, 77, 79, 0.1)',
+      borderColor: '#ff4d4f',
     },
   },
 
@@ -1960,9 +1968,6 @@ class App extends PureComponent {
       <div className={classes.viewerShell}>
         <AppBar className={classes.appBar} position='static' elevation={0}>
           <Toolbar variant="dense" className={classes.viewerToolbar}>
-            <Button variant="outlined" className={classes.dashboardButton} onClick={() => this.props.history.push(localStorage.getItem('user_role') === 'doctor' ? '/doctor' : '/patient')}>
-              Dashboard
-            </Button>
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={this.toggleMainMenu}>
               <MenuIcon />
             </IconButton>
@@ -2086,7 +2091,7 @@ class App extends PureComponent {
           style={{position:'relative', zIndex: 1}}
           onClose={this.toggleMainMenu}
         >
-          <div className={classes.toolbar}>
+          <div className={classes.toolbar} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
           <PerfectScrollbar>   
             <List dense={true}>
               <ListItem button onClick={() => this.showAppBar()}>
@@ -2375,6 +2380,11 @@ class App extends PureComponent {
             }
 
           </PerfectScrollbar>   
+            <div className={classes.returnButtonContainer}>
+              <Button variant="outlined" className={classes.returnButton} onClick={() => this.props.history.push(localStorage.getItem('user_role') === 'doctor' ? '/doctor' : '/patient')} startIcon={<ArrowBackIcon />}>
+                Regresar
+              </Button>
+            </div>
           </div>
         </Drawer>       
 

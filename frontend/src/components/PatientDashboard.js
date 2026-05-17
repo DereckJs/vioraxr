@@ -8,13 +8,11 @@ import { useHistory } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import DescriptionIcon from '@material-ui/icons/Description';
 import EventIcon from '@material-ui/icons/Event';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import VioraBrand, { vioraAssets } from './VioraBrand';
 
 const useStyles = makeStyles((theme) => ({
@@ -69,12 +67,9 @@ const useStyles = makeStyles((theme) => ({
   },
   topGrid: {
     display: 'grid',
-    gridTemplateColumns: 'minmax(760px, 1fr) 420px',
+    gridTemplateColumns: '1fr',
     gap: theme.spacing(2.2),
     marginBottom: theme.spacing(2),
-    [theme.breakpoints.down('md')]: {
-      gridTemplateColumns: '1fr',
-    },
   },
   hero: {
     position: 'relative',
@@ -210,63 +205,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#a8bdcd',
     fontSize: 13,
   },
-  metricGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
-    gap: theme.spacing(1.8),
-    marginBottom: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {
-      gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-    },
-    [theme.breakpoints.down('xs')]: {
-      gridTemplateColumns: '1fr',
-    },
-  },
-  metricCard: {
-    minHeight: 128,
-    padding: theme.spacing(2.2),
-    display: 'grid',
-    gridTemplateColumns: '58px 1fr',
-    gap: theme.spacing(1.5),
-    alignItems: 'center',
-  },
-  metricIconBlue: {
-    color: '#00d4ff',
-    backgroundColor: 'rgba(0, 144, 255, 0.14)',
-  },
-  metricIconPurple: {
-    color: '#c18cff',
-    backgroundColor: 'rgba(122, 53, 255, 0.18)',
-  },
-  metricIconGreen: {
-    color: '#00ff98',
-    backgroundColor: 'rgba(36, 207, 142, 0.14)',
-  },
-  metricIconYellow: {
-    color: '#ffd23f',
-    backgroundColor: 'rgba(255, 210, 63, 0.12)',
-  },
-  metricValue: {
-    display: 'block',
-    color: '#f8fbff',
-    fontSize: 30,
-    lineHeight: 1,
-    fontWeight: 800,
-    fontVariantNumeric: 'tabular-nums',
-  },
-  metricLabel: {
-    marginTop: theme.spacing(0.7),
-    color: '#c2d6e4',
-    fontSize: 14,
-  },
-  cardLink: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: theme.spacing(1),
-    marginTop: theme.spacing(1.4),
-    color: '#00d4ff',
-    fontWeight: 700,
-  },
+
   lowerGrid: {
     display: 'grid',
     gridTemplateColumns: 'minmax(680px, 1fr) 450px',
@@ -358,13 +297,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'rgba(0, 144, 255, 0.12)',
     border: '1px solid rgba(0, 144, 255, 0.24)',
   },
-  tableLink: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: theme.spacing(2),
-    color: '#00d4ff',
-    fontWeight: 700,
-  },
+
   sideColumn: {
     display: 'grid',
     gap: theme.spacing(1.8),
@@ -425,25 +358,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#c2d6e4',
     fontSize: 14,
   },
-  adviceIcon: {
-    color: '#ff4dbe',
-  },
-  adviceBody: {
-    marginTop: theme.spacing(2),
-    display: 'grid',
-    gridTemplateColumns: '58px 1fr',
-    gap: theme.spacing(1.6),
-    alignItems: 'center',
-  },
-  adviceBox: {
-    width: 58,
-    height: 58,
-    display: 'grid',
-    placeItems: 'center',
-    borderRadius: 14,
-    color: '#ff79d1',
-    backgroundColor: 'rgba(255, 77, 190, 0.16)',
-  },
+
 }));
 
 const patientStudies = [
@@ -452,27 +367,6 @@ const patientStudies = [
   { id: 'EST-1009', study: 'Radiografía de tórax', type: 'Radiografía', date: '18 abr 2026', status: 'Completado', result: 'Disponible', icon: 'blue' },
 ];
 
-const MetricCard = ({ icon, value, label, link, tone }) => {
-  const classes = useStyles();
-  const toneClass = tone === 'purple'
-    ? classes.metricIconPurple
-    : tone === 'green'
-      ? classes.metricIconGreen
-      : tone === 'yellow'
-        ? classes.metricIconYellow
-        : classes.metricIconBlue;
-
-  return (
-    <Paper className={`${classes.panel} ${classes.metricCard}`} elevation={0}>
-      <span className={`${classes.iconBox} ${toneClass}`}>{icon}</span>
-      <div>
-        <span className={classes.metricValue}>{value}</span>
-        <Typography className={classes.metricLabel}>{label}</Typography>
-        <span className={classes.cardLink}>{link} <ArrowForwardIcon fontSize="small" /></span>
-      </div>
-    </Paper>
-  );
-};
 
 const PatientDashboard = () => {
   const classes = useStyles();
@@ -544,43 +438,6 @@ const PatientDashboard = () => {
             <img className={classes.patientVisual} src={vioraAssets.paciente} alt="Paciente en visualización médica XR" />
           </Paper>
 
-          <Paper className={`${classes.panel} ${classes.statusPanel}`} elevation={0}>
-            <div className={classes.statusHeader}>
-              <Typography component="h2" className={classes.sideTitle}>Estado general</Typography>
-              <Chip label="Todo en orden" className={classes.statusBadge} />
-            </div>
-            <div className={classes.statusList}>
-              <div className={classes.statusItem}>
-                <span className={classes.iconBox}><CheckCircleOutlineIcon /></span>
-                <div>
-                  <div className={classes.statusName}>Estudios al día</div>
-                  <div className={classes.statusText}>No tienes estudios pendientes</div>
-                </div>
-              </div>
-              <div className={classes.statusItem}>
-                <span className={classes.iconBox}><CheckCircleOutlineIcon /></span>
-                <div>
-                  <div className={classes.statusName}>Resultados disponibles</div>
-                  <div className={classes.statusText}>Tienes 2 estudios con resultados</div>
-                </div>
-              </div>
-              <div className={classes.statusItem}>
-                <span className={classes.iconBox}><EventIcon /></span>
-                <div>
-                  <div className={classes.statusName}>Citas próximas</div>
-                  <div className={classes.statusText}>1 cita programada</div>
-                </div>
-                <KeyboardArrowRightIcon />
-              </div>
-            </div>
-          </Paper>
-        </section>
-
-        <section className={classes.metricGrid}>
-          <MetricCard icon={<DescriptionIcon />} value="6" label="Estudios realizados" link="Ver historial" />
-          <MetricCard icon={<AssignmentTurnedInIcon />} value="2" label="Resultados disponibles" link="Ver resultados" tone="purple" />
-          <MetricCard icon={<EventIcon />} value="1" label="Cita próxima" link="Ver citas" tone="green" />
-          <MetricCard icon={<DescriptionIcon />} value="3" label="Documentos" link="Ver documentos" tone="yellow" />
         </section>
 
         <section className={classes.lowerGrid} id="patient-studies">
@@ -637,7 +494,7 @@ const PatientDashboard = () => {
               </Table>
             </TableContainer>
 
-            <span className={classes.tableLink}>Ver todos mis estudios <ArrowForwardIcon fontSize="small" /></span>
+
           </Paper>
 
           <aside className={classes.sideColumn}>
@@ -659,21 +516,29 @@ const PatientDashboard = () => {
                 </div>
                 <KeyboardArrowRightIcon />
               </div>
-              <span className={classes.cardLink}>Ver todas mis citas <ArrowForwardIcon fontSize="small" /></span>
+              <span className={classes.cardLink}>Ver todas mis citas <KeyboardArrowRightIcon fontSize="small" /></span>
             </Paper>
 
-            <Paper className={`${classes.panel} ${classes.infoPanel}`} elevation={0}>
-              <Typography component="h2" className={classes.infoTitle}>
-                <FavoriteBorderIcon className={classes.adviceIcon} /> Consejos para tu salud
+            <Paper className={`${classes.panel} ${classes.statusPanel}`} elevation={0}>
+              <Typography component="h2" className={classes.sideTitle}>
+                Buzón de notificaciones
               </Typography>
-              <div className={classes.adviceBody}>
-                <span className={classes.adviceBox}><FavoriteBorderIcon /></span>
-                <div>
-                  <div className={classes.infoName}>Mantén tus estudios al día</div>
-                  <div className={classes.infoText}>La prevención y el seguimiento oportuno son clave para tu bienestar.</div>
+              <div className={classes.statusList} style={{ marginTop: '16px' }}>
+                <div className={classes.statusItem}>
+                  <span className={classes.iconBox}><NotificationsActiveIcon /></span>
+                  <div>
+                    <div className={classes.statusName}>Nuevo resultado</div>
+                    <div className={classes.statusText}>CT Abdomen está listo para revisión.</div>
+                  </div>
+                </div>
+                <div className={classes.statusItem}>
+                  <span className={classes.iconBox} style={{ color: '#c18cff', backgroundColor: 'rgba(122, 53, 255, 0.18)' }}><MailOutlineIcon /></span>
+                  <div>
+                    <div className={classes.statusName}>Actualización de cita</div>
+                    <div className={classes.statusText}>Tu consulta fue confirmada.</div>
+                  </div>
                 </div>
               </div>
-              <span className={classes.cardLink}>Ver recomendaciones <ArrowForwardIcon fontSize="small" /></span>
             </Paper>
           </aside>
         </section>
