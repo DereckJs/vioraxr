@@ -180,3 +180,30 @@ export const setDcmEnableTool = (value) => {
         dcmEnableTool: value,
     }
 }
+
+// Notifications Actions
+export const SET_NOTIFICATIONS = 'SET_NOTIFICATIONS'
+export const ADD_NOTIFICATION = 'ADD_NOTIFICATION'
+export const MARK_NOTIFICATION_READ = 'MARK_NOTIFICATION_READ'
+
+export const setNotifications = (notifications, unreadCount) => {
+    return {
+        type: SET_NOTIFICATIONS,
+        notifications,
+        unreadCount
+    }
+}
+
+export const addNotification = (notification) => {
+    return {
+        type: ADD_NOTIFICATION,
+        notification
+    }
+}
+
+export const markNotificationRead = (id) => {
+    return {
+        type: MARK_NOTIFICATION_READ,
+        id
+    }
+}

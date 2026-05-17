@@ -24,6 +24,8 @@ let initialState = {
     fsRefresh: false,
     volume: null,
     dcmEnableTool: false,
+    notifications: [],
+    unreadCount: 0,
 }
 
 const store = createStore(storeReducer, initialState,

@@ -14,6 +14,8 @@ import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import VioraBrand, { vioraAssets } from './VioraBrand';
+import { connect } from 'react-redux';
+import NotificationBell from './NotificationBell';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -368,7 +370,7 @@ const patientStudies = [
 ];
 
 
-const PatientDashboard = () => {
+const PatientDashboard = ({ notifications }) => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -520,24 +522,26 @@ const PatientDashboard = () => {
             </Paper>
 
             <Paper className={`${classes.panel} ${classes.statusPanel}`} elevation={0}>
-              <Typography component="h2" className={classes.sideTitle}>
-                Buzón de notificaciones
-              </Typography>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography component="h2" className={classes.sideTitle} style={{ marginBottom: 0 }}>
+                  Buzón de notificaciones
+                </Typography>
+                <NotificationBell />
+              </div>
               <div className={classes.statusList} style={{ marginTop: '16px' }}>
-                <div className={classes.statusItem}>
-                  <span className={classes.iconBox}><NotificationsActiveIcon /></span>
-                  <div>
-                    <div className={classes.statusName}>Nuevo resultado</div>
-                    <div className={classes.statusText}>CT Abdomen está listo para revisión.</div>
-                  </div>
-                </div>
-                <div className={classes.statusItem}>
-                  <span className={classes.iconBox} style={{ color: '#c18cff', backgroundColor: 'rgba(122, 53, 255, 0.18)' }}><MailOutlineIcon /></span>
-                  <div>
-                    <div className={classes.statusName}>Actualización de cita</div>
-                    <div className={classes.statusText}>Tu consulta fue confirmada.</div>
-                  </div>
-                </div>
+                {notifications.length === 0 ? (
+                  <Typography style={{ color: '#a8bdcd', textAlign: 'center', padding: '16px' }}>No tienes notificaciones recientes</Typography>
+                ) : (
+                  notifications.slice(0, 3).map((notif) => (
+                    <div className={classes.statusItem} key={notif.id}>
+                      <span className={classes.iconBox} style={{ color: '#00d4ff', backgroundColor: 'rgba(0, 212, 255, 0.18)' }}><NotificationsActiveIcon /></span>
+                      <div>
+                        <div className={classes.statusName}>{notif.data?.title || 'Notificación'}</div>
+                        <div className={classes.statusText}>{notif.data?.body}</div>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </Paper>
           </aside>
@@ -547,4 +551,8 @@ const PatientDashboard = () => {
   );
 };
 
-export default PatientDashboard;
+const mapStateToProps = state => ({
+  notifications: state.notifications || []
+});
+
+export default connect(mapStateToProps)(PatientDashboard);

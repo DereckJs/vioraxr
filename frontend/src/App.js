@@ -18,6 +18,7 @@ import Settings from './components/Settings'
 import Chatbot from './components/Chatbot'
 import Dicom3DViewer from './components/Dicom3DViewer'
 import VioraBrand from './components/VioraBrand'
+import NotificationBell from './components/NotificationBell'
 import AppBar from '@material-ui/core/AppBar'
 import Collapse from '@material-ui/core/Collapse'
 import Button from '@material-ui/core/Button'
@@ -1974,6 +1975,7 @@ class App extends PureComponent {
             { this.appBarTitle(classes, isOpen, dcmViewer) }
             
             <div className={classes.grow} />
+            <NotificationBell />
             { !isOpen && !isDicomdir ? (
               <IconButton className={classes.toolbarAction} onClick={this.showAbout}>
                 <Icon path={mdiInformationOutline} size={iconSize} color={iconColor} />

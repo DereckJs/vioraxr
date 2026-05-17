@@ -22,6 +22,9 @@ import {
   FSREFRESH,
   VOLUME_STORE,
   DCMENABLETOOL_STORE,
+  SET_NOTIFICATIONS,
+  ADD_NOTIFICATION,
+  MARK_NOTIFICATION_READ,
 } from '../actions'
 
 export default function storeReducer(state={}, action) {
@@ -52,7 +55,9 @@ export default function storeReducer(state={}, action) {
           fsRefresh: state.fsRefresh,
           volume: null,
           //lut: null,
-          dcmEnableTool: false
+          dcmEnableTool: false,
+          notifications: [],
+          unreadCount: 0
         }    
 
       case LOCALFILE_STORE:
@@ -212,6 +217,29 @@ export default function storeReducer(state={}, action) {
           ...state,
           dcmEnableTool: action.dcmEnableTool,        
         }   
+
+      case SET_NOTIFICATIONS:
+        return {
+          ...state,
+          notifications: action.notifications,
+          unreadCount: action.unreadCount,
+        }
+
+      case ADD_NOTIFICATION:
+        return {
+          ...state,
+          notifications: [action.notification, ...state.notifications],
+          unreadCount: state.unreadCount + 1,
+        }
+
+      case MARK_NOTIFICATION_READ:
+        return {
+          ...state,
+          notifications: state.notifications.map(n => 
+            n.id === action.id ? { ...n, read_at: new Date().toISOString() } : n
+          ),
+          unreadCount: Math.max(0, state.unreadCount - 1),
+        }
 
       default:
           return state

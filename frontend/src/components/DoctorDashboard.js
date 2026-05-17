@@ -11,6 +11,8 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import VioraBrand, { vioraAssets } from './VioraBrand';
+import { connect } from 'react-redux';
+import NotificationBell from './NotificationBell';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -441,7 +443,7 @@ const statusClass = (classes, priority) => {
 
 
 
-const DoctorDashboard = () => {
+const DoctorDashboard = ({ notifications }) => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -502,23 +504,24 @@ const DoctorDashboard = () => {
           </Paper>
 
           <Paper className={`${classes.panel} ${classes.activity}`} elevation={0}>
-            <Typography component="h2" className={classes.activityTitle}>Buzón de notificaciones</Typography>
-            <div className={classes.activityItem}>
-              <span className={`${classes.activityIcon} ${classes.activityIconBlue}`}><NotificationsActiveIcon /></span>
-              <div>
-                <div className={classes.activityName}>Actualización del sistema</div>
-                <div className={classes.activityDesc}>El visor XR recibirá mejoras esta noche.</div>
-              </div>
-              <span className={classes.activityTime}>Hoy</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '22px' }}>
+              <Typography component="h2" className={classes.activityTitle} style={{ marginBottom: 0 }}>Buzón de notificaciones</Typography>
+              <NotificationBell />
             </div>
-            <div className={classes.activityItem}>
-              <span className={`${classes.activityIcon} ${classes.activityIconPurple}`}><MailOutlineIcon /></span>
-              <div>
-                <div className={classes.activityName}>Alerta médica</div>
-                <div className={classes.activityDesc}>Revisión urgente para CT Tórax.</div>
-              </div>
-              <span className={classes.activityTime}>Ayer</span>
-            </div>
+            
+            {notifications.length === 0 ? (
+              <Typography style={{ color: '#a8bdcd', textAlign: 'center', padding: '16px' }}>No tienes notificaciones recientes</Typography>
+            ) : (
+              notifications.slice(0, 3).map((notif) => (
+                <div className={classes.activityItem} key={notif.id}>
+                  <span className={`${classes.activityIcon} ${classes.activityIconBlue}`}><NotificationsActiveIcon /></span>
+                  <div>
+                    <div className={classes.activityName}>{notif.data?.title || 'Notificación'}</div>
+                    <div className={classes.activityDesc}>{notif.data?.body}</div>
+                  </div>
+                </div>
+              ))
+            )}
           </Paper>
 
           <Button variant="outlined" className={`${classes.logout} ${classes.sidebarLogout}`} onClick={handleLogout} startIcon={<ExitToAppIcon />}>
@@ -623,4 +626,8 @@ const DoctorDashboard = () => {
   );
 };
 
-export default DoctorDashboard;
+const mapStateToProps = state => ({
+  notifications: state.notifications || []
+});
+
+export default connect(mapStateToProps)(DoctorDashboard);
