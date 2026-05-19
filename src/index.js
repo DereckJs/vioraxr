@@ -10,7 +10,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 
 WebFontLoader.load({
     google: {
-        families: ['Roboto:300,400,500,700', 'Material Icons'],
+        families: ['Poppins:300,400,500,600,700,800', 'Material Icons'],
     },
 })
 
@@ -34,16 +34,27 @@ const theme = createMuiTheme({
     },
     palette: {
         primary: {
-            main: '#1976d2',
+            main: '#1f8fff',
         },
         secondary: {
-            main: '#00bcd4',
+            main: '#00d4ff',
         },
         background: {
-            default: '#0a1929',
-            paper: '#132f4c',
+            default: '#050b17',
+            paper: '#071426',
+        },
+        text: {
+            primary: '#f8fbff',
+            secondary: '#9eb8ca',
         },
         type: 'dark',
+    },
+    typography: {
+        fontFamily: '"Poppins", "Roboto", "Helvetica", "Arial", sans-serif',
+        button: {
+            textTransform: 'none',
+            fontWeight: 700,
+        },
     },
   })
 
@@ -61,4 +72,3 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.register()
- 

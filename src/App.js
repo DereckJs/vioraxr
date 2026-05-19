@@ -16,6 +16,7 @@ import Measurements from './components/Measurements'
 import OpenMultipleFilesDlg from './components/OpenMultipleFilesDlg'
 import Settings from './components/Settings'
 import Chatbot from './components/Chatbot'
+import { vioraAssets } from './components/VioraBrand'
 import AppBar from '@material-ui/core/AppBar'
 import Collapse from '@material-ui/core/Collapse'
 import Button from '@material-ui/core/Button'
@@ -141,13 +142,13 @@ log()
 //localStorage.setItem("debug", "cornerstoneTools")
 
 const drawerWidth = 240
-const iconColor = '#FFFFFF'
-const activeColor = 'rgba(0, 255, 0, 1.0)'
+const iconColor = '#D6F7FF'
+const activeColor = '#00E5FF'
 
 const styles = theme => ({
   '@global': {
     body: {
-        backgroundColor: theme.palette.common.black,
+        backgroundColor: '#03070B',
     },
   },
 
@@ -161,19 +162,78 @@ const styles = theme => ({
 
   menuButton: {
     marginRight: theme.spacing(2),
+    color: '#D6F7FF',
+    '&:hover': {
+      backgroundColor: 'rgba(0, 229, 255, 0.10)',
+    },
   },
 
   title: {
     flexGrow: 1,
+    minWidth: 0,
+    color: '#E9FBFF',
+    fontWeight: 600,
+    letterSpacing: 0,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
 
   appBar: {
     position: 'relative',
     zIndex: theme.zIndex.drawer + 1,
+    color: '#E9FBFF',
+    background: 'linear-gradient(90deg, #061019 0%, #071B26 48%, #041017 100%)',
+    borderBottom: '1px solid rgba(0, 229, 255, 0.20)',
+    boxShadow: '0 12px 34px rgba(0, 0, 0, 0.38)',
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+  },
+
+  appToolbar: {
+    minHeight: 48,
+    paddingLeft: theme.spacing(1.5),
+    paddingRight: theme.spacing(1.5),
+    background: 'radial-gradient(circle at 18% 0%, rgba(0, 229, 255, 0.16), transparent 28%)',
+    '& .MuiIconButton-root': {
+      color: '#D6F7FF',
+      '&:hover': {
+        backgroundColor: 'rgba(0, 229, 255, 0.10)',
+      },
+    },
+  },
+
+  dashboardButton: {
+    marginRight: theme.spacing(1.25),
+    color: '#D6F7FF',
+    border: '1px solid rgba(0, 229, 255, 0.22)',
+    backgroundColor: 'rgba(3, 16, 24, 0.72)',
+    fontSize: '0.72rem',
+    fontWeight: 700,
+    letterSpacing: 0,
+    textTransform: 'none',
+    '&:hover': {
+      borderColor: 'rgba(0, 229, 255, 0.50)',
+      backgroundColor: 'rgba(0, 229, 255, 0.10)',
+    },
+  },
+
+  brandTitle: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    minWidth: 0,
+    height: 34,
+  },
+
+  viewerLogo: {
+    display: 'block',
+    width: 116,
+    maxHeight: 30,
+    objectFit: 'contain',
+    objectPosition: 'left center',
+    filter: 'drop-shadow(0 8px 18px rgba(0, 229, 255, 0.20))',
   },
 
   appBarShift: {
@@ -218,6 +278,61 @@ const styles = theme => ({
   // Loads information about the app bar, including app bar height
   toolbar: theme.mixins.toolbar,
 
+  drawerPaper: {
+    width: drawerWidth,
+    color: '#CFEAF2',
+    background: 'linear-gradient(180deg, #07131C 0%, #040A10 100%)',
+    borderRight: '1px solid rgba(0, 229, 255, 0.16)',
+    boxShadow: '10px 0 34px rgba(0, 0, 0, 0.42)',
+    '& .MuiTypography-root': {
+      color: '#CFEAF2',
+      letterSpacing: 0,
+    },
+    '& .MuiListItemIcon-root': {
+      color: '#D6F7FF',
+      minWidth: 44,
+    },
+    '& .MuiListItem-button': {
+      borderLeft: '2px solid transparent',
+      transition: theme.transitions.create(['background-color', 'border-color'], {
+        duration: theme.transitions.duration.shortest,
+      }),
+      '&:hover': {
+        backgroundColor: 'rgba(0, 229, 255, 0.09)',
+        borderLeftColor: '#00E5FF',
+      },
+    },
+    '& .MuiListItem-root.Mui-disabled': {
+      opacity: 0.38,
+    },
+    '& .MuiDivider-root': {
+      backgroundColor: 'rgba(0, 229, 255, 0.14)',
+    },
+    '& .MuiSlider-root': {
+      color: '#00E5FF',
+    },
+  },
+
+  panelDrawerPaper: {
+    color: '#D6F7FF',
+    backgroundColor: '#061019',
+    borderLeft: '1px solid rgba(0, 229, 255, 0.16)',
+    boxShadow: '-10px 0 34px rgba(0, 0, 0, 0.42)',
+    '& .MuiTypography-root': {
+      color: '#D6F7FF',
+      letterSpacing: 0,
+    },
+  },
+
+  drawerContent: {
+    height: '100%',
+    paddingTop: 2,
+  },
+
+  panelOffset: {
+    marginTop: 48,
+  },
+
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
@@ -226,6 +341,8 @@ const styles = theme => ({
   listItemText: {
     fontSize: '0.85em',
     marginLeft: '-20px',
+    color: '#CFEAF2',
+    fontWeight: 600,
   },
 
 })
@@ -1038,13 +1155,19 @@ class App extends PureComponent {
   }
 
   appBarTitle = (classes, isOpen, dcmViewer) => {
+    const brand = (
+      <span className={classes.brandTitle}>
+        <img className={classes.viewerLogo} src={vioraAssets.logoHorizontal} alt="VioraXR" />
+      </span>
+    )
+
     if (isMobile && !isTablet) {
       if (isOpen) 
         return null
       else 
         return (
           <Typography variant="overline" className={classes.title}>
-            <strong>VIORA</strong> <strong style={{ color: '#00E5FF' }}>XR</strong>
+            {brand}
           </Typography>          
         )
     } else {
@@ -1071,7 +1194,7 @@ class App extends PureComponent {
       } else
         return (
           <Typography variant="overline" className={classes.title}>
-            <strong>VIORA</strong> <strong style={{ color: '#00E5FF' }}>XR</strong>
+            {brand}
           </Typography>
         )
     }
@@ -1857,8 +1980,8 @@ class App extends PureComponent {
     return (
       <div>
         <AppBar className={classes.appBar} position='static' elevation={0}>
-          <Toolbar variant="dense">
-            <Button color="inherit" onClick={() => this.props.history.push(localStorage.getItem('user_role') === 'doctor' ? '/doctor' : '/patient')} style={{ marginRight: '10px' }}>
+          <Toolbar variant="dense" className={classes.appToolbar}>
+            <Button color="inherit" className={classes.dashboardButton} onClick={() => this.props.history.push(localStorage.getItem('user_role') === 'doctor' ? '/doctor' : '/patient')}>
               Dashboard
             </Button>
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={this.toggleMainMenu}>
@@ -1976,9 +2099,10 @@ class App extends PureComponent {
           variant="persistent"
           open={visibleMainMenu} 
           style={{position:'relative', zIndex: 1}}
+          classes={{ paper: classes.drawerPaper }}
           onClose={this.toggleMainMenu}
         >
-          <div className={classes.toolbar}>
+          <div className={`${classes.toolbar} ${classes.drawerContent}`}>
           <PerfectScrollbar>   
             <List dense={true}>
               <ListItem button onClick={() => this.showAppBar()}>
@@ -2276,6 +2400,7 @@ class App extends PureComponent {
           variant="persistent"
           anchor='right'
           open={visibleHeader}
+          classes={{ paper: classes.panelDrawerPaper }}
           onClose={this.toggleHeader}
         >
           { visibleHeader ? <DicomHeader dcmViewer={dcmViewer} classes={classes} color={iconColor} /> : null } 
@@ -2286,6 +2411,7 @@ class App extends PureComponent {
           anchor='right'
           open={visibleChatbot}
           onClose={this.toggleChatbot}
+          classes={{ paper: classes.panelDrawerPaper }}
           PaperProps={{ style: { width: '320px' } }}
         >
           { visibleChatbot ? <Chatbot dcmViewer={dcmViewer} /> : null } 
@@ -2295,9 +2421,10 @@ class App extends PureComponent {
           variant="persistent"
           anchor='right'
           open={visibleMeasure}
+          classes={{ paper: classes.panelDrawerPaper }}
           onClose={this.toggleMeasure}
         >
-          <div style={{marginTop: '48px'}}>
+          <div className={classes.panelOffset}>
             <Toolbar variant="dense">
               <Typography variant="subtitle1" className={classes.title}>
                 Measurements&nbsp;&nbsp;
@@ -2320,9 +2447,10 @@ class App extends PureComponent {
           variant="persistent"
           anchor='right'
           open={visibleToolbox}
+          classes={{ paper: classes.panelDrawerPaper }}
           onClose={this.toggleToolbox}
         >
-          <div style={{marginTop: '48px'}}>
+          <div className={classes.panelOffset}>
             <div>  
               { isOpen ? <Histogram key={dcmViewer.filename} /> : null } 
             </div>
@@ -2333,6 +2461,7 @@ class App extends PureComponent {
           variant="persistent"
           anchor={getSettingsDicomdirView()}
           open={visibleDicomdir}
+          classes={{ paper: getSettingsDicomdirView() === 'left' ? classes.drawerPaper : classes.panelDrawerPaper }}
           onClose={this.toggleDicomdir}
         >
           <div>
@@ -2346,6 +2475,7 @@ class App extends PureComponent {
           variant="persistent"
           anchor={getSettingsFsView()}
           open={visibleFileManager}
+          classes={{ paper: getSettingsFsView() === 'left' ? classes.drawerPaper : classes.panelDrawerPaper }}
           onClose={this.toggleFileManager}
         >
           <div>
@@ -2505,6 +2635,7 @@ class App extends PureComponent {
           variant="persistent"
           anchor='right'
           open={visibleExplorer}
+          classes={{ paper: classes.panelDrawerPaper }}
           onClose={this.toggleExplorer}
         >
           <div>
